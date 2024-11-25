@@ -70,3 +70,13 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore virtual environment
+env4gesturerecog/
+
+# Ignore Python cache files
+*.pyc
+__pycache__/
+
+# Ignore environment configuration files
+*.env
