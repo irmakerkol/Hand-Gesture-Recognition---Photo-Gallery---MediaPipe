@@ -19,54 +19,54 @@ public class GalleryView : MonoBehaviour
 
         // Listen for changes in favorites via EventService
         EventService.OnFavoriteAdded += OnFavoriteAdded;
+        EventService.OnFavoriteRemoved += OnFavoriteRemoved;
     }
 
     private void OnDestroy()
     {
         EventService.OnFavoriteAdded -= OnFavoriteAdded;
+        EventService.OnFavoriteRemoved -= OnFavoriteRemoved;
     }
 
     private void OnFavoriteAdded(ImageData newFavorite)
     {
         CreateImageItem(newFavorite, favoritesContent, true);
     }
+
+    private void OnFavoriteRemoved(ImageData removedFavorite)
+    {
+        // Remove the corresponding favorite image from the favorites content
+        foreach (Transform child in favoritesContent.transform)
+        {
+            Image imageComponent = child.GetComponent<Image>();
+            if (imageComponent != null && imageComponent.sprite == removedFavorite.ImageSprite)
+            {
+                Destroy(child.gameObject);
+                break;
+            }
+        }
+    }
+
     private void CreateImageItem(ImageData imageData, GameObject parent, bool isFavorite)
     {
-        if (imagePrefab == null)
-        {
-            Debug.LogError("Image prefab is not assigned in the GalleryView script.");
-            return;
-        }
-
         GameObject newImage = Instantiate(imagePrefab, parent.transform);
-        if (newImage == null)
+        newImage.GetComponent<Image>().sprite = imageData.ImageSprite;
+
+        if (isFavorite)
         {
-            Debug.LogError("Failed to instantiate the image prefab.");
-            return;
+            Button removeButton = newImage.GetComponentInChildren<Button>();
+            if (removeButton != null)
+            {
+                removeButton.onClick.AddListener(() => viewModel.RemoveFromFavorites(imageData));
+            }
         }
-
-        Image imageComponent = newImage.GetComponent<Image>();
-        if (imageComponent == null)
-        {
-            Debug.LogError("The instantiated prefab does not have an Image component.");
-            return;
-        }
-
-        imageComponent.sprite = imageData.ImageSprite;
-
-        if (!isFavorite)
+        else
         {
             Button favoriteButton = newImage.GetComponentInChildren<Button>();
             if (favoriteButton != null)
             {
                 favoriteButton.onClick.AddListener(() => viewModel.AddToFavorites(imageData));
             }
-            else
-            {
-                Debug.LogError("The instantiated prefab does not have a Favorite Button.");
-            }
         }
     }
-
-
 }

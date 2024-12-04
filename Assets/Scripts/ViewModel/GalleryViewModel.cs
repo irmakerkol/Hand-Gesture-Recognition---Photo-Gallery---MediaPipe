@@ -15,7 +15,6 @@ public class GalleryViewModel : MonoBehaviour
         foreach (Sprite sprite in galleryImages)
         {
             Images.Add(new ImageData(sprite));
-            print("Image added to gallery");
         }
     }
 
@@ -26,6 +25,16 @@ public class GalleryViewModel : MonoBehaviour
             image.IsFavorite = true;
             FavoriteImages.Add(image);
             EventService.RaiseFavoriteAdded(image);
+        }
+    }
+
+    public void RemoveFromFavorites(ImageData image)
+    {
+        if (image.IsFavorite)
+        {
+            image.IsFavorite = false;
+            FavoriteImages.Remove(image);
+            EventService.RaiseFavoriteRemoved(image);
         }
     }
 }
