@@ -18,6 +18,20 @@ public class PanelController : MonoBehaviour
         favoritesButton.onClick.RemoveListener(ShowFavorites);
         cameraButton.onClick.RemoveListener(ShowTakePhoto);
     }
+    private void Update()
+    {
+        
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            ShowMainMenu();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ExitApplication();
+        }
+
+    }
 
     public void ShowMainMenu()
     {
