@@ -47,6 +47,8 @@ public class PanelController : MonoBehaviour
         galleryPanel.SetActive(true);
         favoritesPanel.SetActive(false);
         cameraPanel.SetActive(false);
+
+        EventService.OpenGallery();
     }
 
     public void ShowFavorites()
@@ -63,7 +65,6 @@ public class PanelController : MonoBehaviour
         galleryPanel.SetActive(false);
         favoritesPanel.SetActive(false);
         cameraPanel.SetActive(true);
-        // Add additional logic to trigger the photo capture functionality
     }
 
     public void ExitApplication()

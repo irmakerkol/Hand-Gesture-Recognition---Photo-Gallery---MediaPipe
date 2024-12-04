@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class GalleryViewModel : MonoBehaviour
 {
-    public Sprite[] galleryImages;  // Array to store the images in the gallery
+    public List<Sprite> galleryImages;  // List to store the images in the gallery
     public ObservableCollection<ImageData> Images { get; private set; }
     public ObservableCollection<ImageData> FavoriteImages { get; private set; }
 
@@ -12,10 +13,29 @@ public class GalleryViewModel : MonoBehaviour
         Images = new ObservableCollection<ImageData>();
         FavoriteImages = new ObservableCollection<ImageData>();
 
-        foreach (Sprite sprite in galleryImages)
+        if (galleryImages != null)
         {
-            Images.Add(new ImageData(sprite));
+            foreach (Sprite image in galleryImages)
+            {
+                Images.Add(new ImageData(image));
+            }
         }
+    }
+
+    private void Start() 
+    {
+        EventService.OnPhotoTaken += OnPhotoTaken;
+    }
+
+    private void OnDestroy() 
+    {
+        EventService.OnPhotoTaken -= OnPhotoTaken;
+    }
+
+    private void OnPhotoTaken(ImageData imageData)
+    {
+        galleryImages.Add(imageData.ImageSprite);
+        Images.Add(imageData);
     }
 
     public void AddToFavorites(ImageData image)

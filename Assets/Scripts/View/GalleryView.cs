@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,21 +10,36 @@ public class GalleryView : MonoBehaviour
 
     private void Start()
     {
-        // Populate gallery view with images
-        foreach (ImageData imageData in viewModel.Images)
+        foreach(ImageData imageData in viewModel.Images)
         {
-            CreateImageItem(imageData, galleryContent, false);
+            Debug.Log("Image data: " + imageData);
+            CreateImageItem(imageData, galleryContent, imageData.IsFavorite);
         }
-
-        // Listen for changes in favorites via EventService
         EventService.OnFavoriteAdded += OnFavoriteAdded;
         EventService.OnFavoriteRemoved += OnFavoriteRemoved;
+        EventService.OnGalleryOpen += OnGalleryOpen;
     }
 
     private void OnDestroy()
     {
         EventService.OnFavoriteAdded -= OnFavoriteAdded;
         EventService.OnFavoriteRemoved -= OnFavoriteRemoved;
+        EventService.OnGalleryOpen -= OnGalleryOpen;
+    }
+
+    private void OnGalleryOpen()
+    {
+        // Clear the gallery content
+        foreach (Transform child in galleryContent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        foreach(ImageData imageData in viewModel.Images)
+        {
+            CreateImageItem(imageData, galleryContent, imageData.IsFavorite);
+        }
+   
     }
 
     private void OnFavoriteAdded(ImageData newFavorite)
