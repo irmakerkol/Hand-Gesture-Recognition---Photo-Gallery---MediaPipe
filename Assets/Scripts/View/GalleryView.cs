@@ -12,7 +12,6 @@ public class GalleryView : MonoBehaviour
     {
         foreach(ImageData imageData in viewModel.Images)
         {
-            Debug.Log("Image data: " + imageData);
             CreateImageItem(imageData, galleryContent, imageData.IsFavorite);
         }
         EventService.OnFavoriteAdded += OnFavoriteAdded;
@@ -45,6 +44,8 @@ public class GalleryView : MonoBehaviour
     private void OnFavoriteAdded(ImageData newFavorite)
     {
         CreateImageItem(newFavorite, favoritesContent, true);
+        Debug.Log("Favorite added: " + newFavorite);
+        OnGalleryOpen();
     }
 
     private void OnFavoriteRemoved(ImageData removedFavorite)
@@ -59,10 +60,14 @@ public class GalleryView : MonoBehaviour
                 break;
             }
         }
+
+        OnGalleryOpen();
+
     }
 
     private void CreateImageItem(ImageData imageData, GameObject parent, bool isFavorite)
-    {
+    {   
+
         GameObject newImage = Instantiate(imagePrefab, parent.transform);
         newImage.GetComponent<Image>().sprite = imageData.ImageSprite;
 
@@ -71,16 +76,20 @@ public class GalleryView : MonoBehaviour
             Button removeButton = newImage.GetComponentInChildren<Button>();
             if (removeButton != null)
             {
+                Debug.Log("Remove button found");
                 removeButton.onClick.AddListener(() => viewModel.RemoveFromFavorites(imageData));
             }
         }
         else
         {
             Button favoriteButton = newImage.GetComponentInChildren<Button>();
+            favoriteButton.GetComponent<Image>().color = Color.gray;
             if (favoriteButton != null)
             {
                 favoriteButton.onClick.AddListener(() => viewModel.AddToFavorites(imageData));
             }
         }
+
     }
+
 }
