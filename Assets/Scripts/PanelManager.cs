@@ -35,6 +35,7 @@ public class PanelController : MonoBehaviour
 
     public void ShowMainMenu()
     {
+        SoundManager.instance.PlaySound(SoundManager.instance.GetAudioClip(SoundManager.Sound.ButtonClick));
         mainMenuPanel.SetActive(true);
         galleryPanel.SetActive(false);
         favoritesPanel.SetActive(false);
@@ -43,6 +44,7 @@ public class PanelController : MonoBehaviour
 
     public void ShowGallery()
     {
+        SoundManager.instance.PlaySound(SoundManager.instance.GetAudioClip(SoundManager.Sound.ButtonClick));
         mainMenuPanel.SetActive(false);
         galleryPanel.SetActive(true);
         favoritesPanel.SetActive(false);
@@ -53,6 +55,7 @@ public class PanelController : MonoBehaviour
 
     public void ShowFavorites()
     {
+        SoundManager.instance.PlaySound(SoundManager.instance.GetAudioClip(SoundManager.Sound.ButtonClick));
         mainMenuPanel.SetActive(false);
         galleryPanel.SetActive(false);
         favoritesPanel.SetActive(true);
@@ -61,6 +64,7 @@ public class PanelController : MonoBehaviour
 
     public void ShowTakePhoto()
     {
+        SoundManager.instance.PlaySound(SoundManager.instance.GetAudioClip(SoundManager.Sound.ButtonClick));
         mainMenuPanel.SetActive(false);
         galleryPanel.SetActive(false);
         favoritesPanel.SetActive(false);

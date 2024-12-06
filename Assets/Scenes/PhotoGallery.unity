@@ -1953,6 +1953,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1535895891}
   cameraShutterSound: {fileID: 8300000, guid: cac80be67a3380748bbcb0512b295607, type: 3}
+  buttonClickSound: {fileID: 8300000, guid: d9690b82c31118047b727bb06cd05b81, type: 3}
 --- !u!1 &1540042241
 GameObject:
   m_ObjectHideFlags: 0
