@@ -6,11 +6,12 @@ public class SoundManager : MonoBehaviour
 
     public static SoundManager instance;
 
-    public AudioClip cameraShutterSound;
+    public AudioClip cameraShutterSound, buttonClickSound;
 
     public enum Sound
     {
-        CameraShutter
+        CameraShutter,
+        ButtonClick
     }
 
     public AudioClip GetAudioClip(Sound sound)
@@ -19,6 +20,8 @@ public class SoundManager : MonoBehaviour
         {
             case Sound.CameraShutter:
                 return cameraShutterSound;
+            case Sound.ButtonClick:
+                return buttonClickSound;
             default:
                 return null;
         }
