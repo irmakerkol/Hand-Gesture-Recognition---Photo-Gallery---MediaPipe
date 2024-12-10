@@ -4,6 +4,7 @@ import gesture_recognition as htm
 from pynput.mouse import Button, Controller
 from screeninfo import get_monitors
 import pyvirtualcam
+import keyboard
 
 # Get screen dimensions
 main_monitor = None
@@ -77,6 +78,10 @@ with pyvirtualcam.Camera(width=wCam, height=hCam, fps=30, fmt=pyvirtualcam.Pixel
                 if mode != "right_click":
                     print("right click detected")
                     mode = "right_click"
+            elif fingers == [1, 1, 1, 1, 1]:  # Thumbs-up detected
+                if mode != "thumbs_up":
+                    print("Thumbs-up detected: Like/Dislike photo")
+                    mode = "thumbs_up"
             else:
                 mode = "N"
 
@@ -103,6 +108,8 @@ with pyvirtualcam.Camera(width=wCam, height=hCam, fps=30, fmt=pyvirtualcam.Pixel
             mouse.scroll(0, -scroll_amount)
         elif mode == "scroll_up":
             mouse.scroll(0, scroll_amount)
+        elif mode == "thumbs_up":
+            keyboard.release('l')
 
         # Release buttons
         if len(fingers) > 0 and fingers[0] == 1:
@@ -124,3 +131,4 @@ with pyvirtualcam.Camera(width=wCam, height=hCam, fps=30, fmt=pyvirtualcam.Pixel
 
 # Release resources
 cap.release()
+

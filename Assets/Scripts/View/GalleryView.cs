@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GalleryView : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class GalleryView : MonoBehaviour
 
     private void Start()
     {
-        foreach(ImageData imageData in viewModel.Images)
+        foreach (ImageData imageData in viewModel.Images)
         {
             CreateImageItem(imageData, galleryContent, imageData.IsFavorite);
         }
@@ -26,6 +27,53 @@ public class GalleryView : MonoBehaviour
         EventService.OnGalleryOpen -= OnGalleryOpen;
     }
 
+    private void Update()
+    {
+        // Check if the "L" key is pressed
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            ProcessLikeGesture();
+        }
+    }
+
+    private void ProcessLikeGesture()
+    {
+        // Perform a raycast to detect the UI element under the cursor
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition // Position of the cursor
+        };
+
+        var raycastResults = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, raycastResults);
+
+        foreach (RaycastResult result in raycastResults)
+        {
+            Image imageComponent = result.gameObject.GetComponent<Image>();
+            if (imageComponent != null)
+            {
+                // Find the corresponding ImageData
+                foreach (ImageData imageData in viewModel.Images)
+                {
+                    if (imageData.ImageSprite == imageComponent.sprite)
+                    {
+                        if (imageData.IsFavorite)
+                        {
+                            viewModel.RemoveFromFavorites(imageData);
+                        }
+                        else
+                        {
+                            viewModel.AddToFavorites(imageData);
+                        }
+
+                        Debug.Log($"Processed like for: {imageData.ImageSprite.name}");
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     private void OnGalleryOpen()
     {
         // Clear the gallery content
@@ -33,12 +81,11 @@ public class GalleryView : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        
-        foreach(ImageData imageData in viewModel.Images)
+
+        foreach (ImageData imageData in viewModel.Images)
         {
             CreateImageItem(imageData, galleryContent, imageData.IsFavorite);
         }
-   
     }
 
     private void OnFavoriteAdded(ImageData newFavorite)
@@ -62,12 +109,10 @@ public class GalleryView : MonoBehaviour
         }
 
         OnGalleryOpen();
-
     }
 
     private void CreateImageItem(ImageData imageData, GameObject parent, bool isFavorite)
-    {   
-
+    {
         GameObject newImage = Instantiate(imagePrefab, parent.transform);
         newImage.GetComponent<Image>().sprite = imageData.ImageSprite;
 
@@ -89,7 +134,5 @@ public class GalleryView : MonoBehaviour
                 favoriteButton.onClick.AddListener(() => viewModel.AddToFavorites(imageData));
             }
         }
-
     }
-
 }
