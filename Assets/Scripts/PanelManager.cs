@@ -1,12 +1,12 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PanelController : MonoBehaviour
 {
-    public GameObject mainMenuPanel,galleryPanel,favoritesPanel,cameraPanel,helpPanel, navBarPanel;
+    public GameObject mainMenuPanel,galleryPanel,favoritesPanel,cameraPanel,helpPanel;
     public Button galleryButton,favoritesButton,cameraButton,helpButton;
 
-    public Button infoButton, menuButton;
 
     private void Start()
     {
@@ -14,8 +14,6 @@ public class PanelController : MonoBehaviour
         favoritesButton.onClick.AddListener(ShowFavorites);
         cameraButton.onClick.AddListener(ShowTakePhoto);
         helpButton.onClick.AddListener(ShowHelp);
-        infoButton.onClick.AddListener(ShowHelp);
-        menuButton.onClick.AddListener(ShowMainMenu);
     }
 
     private void OnDestroy() 
@@ -24,14 +22,12 @@ public class PanelController : MonoBehaviour
         favoritesButton.onClick.RemoveListener(ShowFavorites);
         cameraButton.onClick.RemoveListener(ShowTakePhoto);
         helpButton.onClick.RemoveListener(ShowHelp);
-        infoButton.onClick.RemoveListener(ShowHelp);
-        menuButton.onClick.RemoveListener(ShowMainMenu);
     }
 
     private void Update()
     {
-        
-        if (Input.GetKeyDown(KeyCode.M))
+        //mouse clicked left show main menu
+        if (Input.GetKeyDown(KeyCode.M) || Input.GetMouseButtonDown(1))
         {
             ShowMainMenu();
         }
@@ -51,7 +47,6 @@ public class PanelController : MonoBehaviour
         favoritesPanel.SetActive(false);
         cameraPanel.SetActive(false);
         helpPanel.SetActive(true);
-        navBarPanel.SetActive(false);
     }
 
     public void ShowMainMenu()
@@ -62,7 +57,6 @@ public class PanelController : MonoBehaviour
         favoritesPanel.SetActive(false);
         cameraPanel.SetActive(false);
         helpPanel.SetActive(false);
-        navBarPanel.SetActive(false);
     }
 
     public void ShowGallery()
@@ -73,7 +67,6 @@ public class PanelController : MonoBehaviour
         favoritesPanel.SetActive(false);
         cameraPanel.SetActive(false);
         helpPanel.SetActive(false);
-        navBarPanel.SetActive(true);
 
         EventService.OpenGallery();
     }
@@ -86,7 +79,6 @@ public class PanelController : MonoBehaviour
         favoritesPanel.SetActive(true);
         cameraPanel.SetActive(false);
         helpPanel.SetActive(false);
-        navBarPanel.SetActive(true);
     }
 
     public void ShowTakePhoto()
@@ -97,7 +89,6 @@ public class PanelController : MonoBehaviour
         favoritesPanel.SetActive(false);
         cameraPanel.SetActive(true);
         helpPanel.SetActive(false);
-        navBarPanel.SetActive(true);
     }
 
     public void ExitApplication()
