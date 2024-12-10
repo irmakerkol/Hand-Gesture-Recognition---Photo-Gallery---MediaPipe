@@ -3,3 +3,5 @@ numpy
 pynput
 screeninfo
 mediapipe
+pyvirtualcam
+keyboard
