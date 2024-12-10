@@ -11,6 +11,19 @@ public class CameraView : MonoBehaviour
 
     private void Start()
     {
+          foreach (var device in WebCamTexture.devices)
+        {
+            Debug.Log($"Device: {device.name}");
+        }
+
+        // Use the virtual camera (replace "OBS Virtual Camera" with your virtual cam name)
+        string virtualCamName = "OBS Virtual Camera";
+        webCamTexture = new WebCamTexture(virtualCamName);
+        cameraPreview.texture = webCamTexture;
+        cameraPreview.material.mainTexture = webCamTexture;
+
+        // Start the virtual camera feed
+        webCamTexture.Play();
         takePhotoButton.onClick.AddListener(TakePhoto);
     }
 
