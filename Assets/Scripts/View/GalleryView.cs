@@ -9,6 +9,9 @@ public class GalleryView : MonoBehaviour
     public GameObject imagePrefab;
     public GalleryViewModel viewModel;
 
+    private float lastClickTime = 0f; // To track the time of the last click
+    private float doubleClickThreshold = 1f; // Time threshold for double-click
+
     private void Start()
     {
         foreach (ImageData imageData in viewModel.Images)
@@ -29,14 +32,21 @@ public class GalleryView : MonoBehaviour
 
     private void Update()
     {
-        // Check if the "L" key is pressed
-        if (Input.GetKeyDown(KeyCode.L))
+        // Check for mouse clicks
+        if (Input.GetMouseButtonDown(0)) // Left mouse button
         {
-            ProcessLikeGesture();
+            float timeSinceLastClick = Time.time - lastClickTime;
+
+            if (timeSinceLastClick <= doubleClickThreshold)
+            {
+                ProcessDoubleClick();
+            }
+
+            lastClickTime = Time.time;
         }
     }
 
-    private void ProcessLikeGesture()
+    private void ProcessDoubleClick()
     {
         // Perform a raycast to detect the UI element under the cursor
         PointerEventData pointerData = new PointerEventData(EventSystem.current)

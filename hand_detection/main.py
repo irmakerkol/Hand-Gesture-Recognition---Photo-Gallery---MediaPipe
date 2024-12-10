@@ -78,10 +78,7 @@ with pyvirtualcam.Camera(width=wCam, height=hCam, fps=30, fmt=pyvirtualcam.Pixel
                 if mode != "right_click":
                     print("right click detected")
                     mode = "right_click"
-            elif fingers == [1, 1, 1, 1, 1]:  # Thumbs-up detected
-                if mode != "thumbs_up":
-                    print("Thumbs-up detected: Like/Dislike photo")
-                    mode = "thumbs_up"
+       
             else:
                 mode = "N"
 
@@ -108,9 +105,7 @@ with pyvirtualcam.Camera(width=wCam, height=hCam, fps=30, fmt=pyvirtualcam.Pixel
             mouse.scroll(0, -scroll_amount)
         elif mode == "scroll_up":
             mouse.scroll(0, scroll_amount)
-        elif mode == "thumbs_up":
-            keyboard.release('l')
-
+    
         # Release buttons
         if len(fingers) > 0 and fingers[0] == 1:
             if button_left_down:
@@ -119,6 +114,7 @@ with pyvirtualcam.Camera(width=wCam, height=hCam, fps=30, fmt=pyvirtualcam.Pixel
             elif button_right_down:
                 mouse.release(Button.right)
                 button_right_down = False
+     
 
         # Send the frame to the virtual camera
         frame_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
